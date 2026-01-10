@@ -1,11 +1,17 @@
-
 <!DOCTYPE html>
 <html lang="zh-CN">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>表格</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <meta name="format-detection" content="telephone=no">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <title>渠道信息表</title>
     <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
         body {
             font-family: Arial, sans-serif;
             margin: 20px;
@@ -15,6 +21,7 @@
         h1 {
             text-align: center;
             color: #333;
+            margin: 20px 0;
         }
         table {
             width: 100%;
@@ -39,13 +46,73 @@
         tr:nth-child(even) {
             background-color: #f9f9f9;
         }
+        /* 微信提示遮罩层 */
+        #wechat-tip {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.8);
+            z-index: 9999;
+            justify-content: center;
+            align-items: center;
+            flex-direction: column;
+            color: white;
+            text-align: center;
+            padding: 20px;
+        }
+        #wechat-tip.active {
+            display: flex;
+        }
+        #wechat-tip .icon {
+            font-size: 60px;
+            margin-bottom: 20px;
+        }
+        #wechat-tip .text {
+            font-size: 18px;
+            line-height: 1.5;
+            margin-bottom: 30px;
+        }
+        #wechat-tip .arrow {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            width: 100px;
+            height: 100px;
+            background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><path d="M80,10 L90,20 L30,80 L10,80 L10,60 L60,60 L60,10 Z" fill="white" opacity="0.8"/></svg>');
+            background-size: contain;
+            background-repeat: no-repeat;
+            transform: rotate(45deg);
+        }
+        #close-tip {
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 5px;
+            font-size: 16px;
+            cursor: pointer;
+        }
     </style>
 </head>
 <body>
-    <h1>电信过年优惠啦~~</h1>
-    <table><meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-<meta name="format-detection" content="telephone=no">
-<meta name="apple-mobile-web-app-capable" content="yes">
+    <!-- 微信提示遮罩层 -->
+    <div id="wechat-tip">
+        <div class="arrow"></div>
+        <div class="icon">📱</div>
+        <div class="text">
+            请点击右上角<br>
+            <strong>「•••」</strong><br>
+            选择「在浏览器中打开」<br>
+            以获得最佳体验
+        </div>
+        <button id="close-tip">暂不打开</button>
+    </div>
+
+    <h1>渠道信息表</h1>
+    <table>
         <thead>
             <tr>
                 <th>区县</th><th>渠道名称</th><th>联系电话</th>
@@ -151,8 +218,23 @@
             
         </tbody>
     </table>
+
+    <script>
+        // 检测是否为微信浏览器
+        function isWeChatBrowser() {
+            var ua = navigator.userAgent.toLowerCase();
+            return ua.indexOf('micromessenger') !== -1;
+        }
+
+        // 显示微信提示
+        if (isWeChatBrowser()) {
+            document.getElementById('wechat-tip').classList.add('active');
+        }
+
+        // 关闭提示
+        document.getElementById('close-tip').onclick = function() {
+            document.getElementById('wechat-tip').classList.remove('active');
+        };
+    </script>
 </body>
 </html>
-
-    
-
